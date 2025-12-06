@@ -2,10 +2,14 @@
   <header class="header">
     <h1>PixelTrack</h1>
   </header>
-  <app-navbar (toggleFlags)="toggleCountryList()"></app-navbar>
+  <app-navbar 
+    [currentLang]="currentLang" 
+    [currentFlag]="currentFlag" 
+    (toggleFlags)="toggleCountryList()">
+  </app-navbar>
 
   <div *ngIf="showCountryList; else gameContent">
-    <app-country-list></app-country-list>
+    <app-country-list (countrySelected)="onCountrySelected($event)"></app-country-list>
   </div>
 
   <ng-template #gameContent>

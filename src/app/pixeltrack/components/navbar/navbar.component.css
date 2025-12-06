@@ -48,15 +48,17 @@
 
 .language-btn {
   padding: 0 12px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  gap: 6px;
-}
-
-.flag-icon {
-  font-size: 1.3rem;
+  gap: 0px;
 }
 
 .lang-text {
-  font-family: inherit;
+  font-weight: 700;
+  font-size: 10px;
+  margin-top: 12px;
+}
+
+.flag-icon-svg {
+  fill: currentColor;
+  width: 24px;
+  height: 24px;
 }

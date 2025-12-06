@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CountriesService } from '../../services/countries.service';
 import { Country } from '../../interfaces/country.interface';
@@ -11,6 +11,8 @@ import { Country } from '../../interfaces/country.interface';
   styleUrl: './country-list.component.css'
 })
 export class CountryListComponent implements OnInit {
+
+  @Output() countrySelected = new EventEmitter<Country>();
 
   public countries = signal<Country[]>([]);
   public currentPage = signal<number>(1);
@@ -46,5 +48,9 @@ export class CountryListComponent implements OnInit {
       this.currentPage.update(page => page - 1);
       this.updatePaginatedCountries();
     }
+  }
+
+  selectCountry(country: Country) {
+    this.countrySelected.emit(country);
   }
 }

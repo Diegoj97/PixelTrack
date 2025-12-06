@@ -1,33 +1,21 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
 
+  @Input() currentLang: string = 'ES';
+  @Input() currentFlag: string | null = null;
   @Output() toggleFlags = new EventEmitter<void>();
 
-  public currentLang: string = 'ES';
-  public currentFlag: string = '🇪🇸';
-
   ngOnInit(): void {
-    const lang = navigator.language.split('-')[0].toUpperCase();
-    this.currentLang = lang;
-
-    switch (lang) {
-      case 'ES':
-        this.currentFlag = '🇪🇸';
-        break;
-      case 'EN':
-        this.currentFlag = '🇬🇧';
-        break;
-      default:
-        this.currentFlag = '🌍';
-    }
+    // Initialization logic moved to parent or handled via inputs
   }
 
   onToggleFlags(): void {

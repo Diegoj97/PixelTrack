@@ -1,9 +1,8 @@
 <div class="country-list-container">
   <h2>Lista de Banderas</h2>
-  <p>Total de páginas: {{ totalPages() }}</p>
   
   <div class="grid-container">
-    <div *ngFor="let country of paginatedCountries()" class="country-card">
+    <div *ngFor="let country of paginatedCountries()" class="country-card" (click)="selectCountry(country)">
       <img [src]="country.flags.png" [alt]="country.flags.alt || country.name.common" class="flag-image">
       <p>{{ country.name.common }}</p>
     </div>

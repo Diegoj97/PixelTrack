@@ -7,6 +7,7 @@ import { CountryListComponent } from '../../components/country-list/country-list
 import { SpotifyService } from '../../services/spotify.service';
 import { CountriesService } from '../../services/countries.service';
 import { CommonModule } from '@angular/common';
+import { Country } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'app-pixeltrack-page',
@@ -24,6 +25,9 @@ export class PixeltrackPage implements OnInit {
   keyStatuses: { [key: string]: string } = {};
   currentBlur: number = 15;
   showCountryList: boolean = false;
+
+  currentLang: string = 'ES';
+  currentFlag: string | null = null;
   
   // Conjunto para rastrear índices de letras descubiertas correctamente
   private discoveredIndices: Set<number> = new Set();
@@ -37,7 +41,19 @@ export class PixeltrackPage implements OnInit {
     this.showCountryList = !this.showCountryList;
   }
 
+  onCountrySelected(country: Country): void {
+    this.currentLang = country.cca2;
+    this.currentFlag = country.flags.svg;
+    this.showCountryList = false;
+  }
+
   ngOnInit(): void {
+    // Initialize language based on navigator
+    const lang = navigator.language.split('-')[0].toUpperCase();
+    this.currentLang = lang;
+    // We could fetch the flag for the initial language here if needed, 
+    // but for now we'll start with null (showing the SVG icon) or we can try to find it.
+    
     this.countriesService.getCountries().subscribe({
       next: (countries) => {
         console.log('Banderas cargadas:', countries);
