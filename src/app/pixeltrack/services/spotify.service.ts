@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, map, switchMap, catchError, throwError, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { SpotifyArtist, SpotifySearchResponse, SpotifyAlbumsResponse } from '../interfaces/spotify.interfaces';
+import { SpotifyArtist, SpotifySearchResponse, SpotifyAlbumsResponse, SpotifyAlbum } from '../interfaces/spotify.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -43,13 +43,13 @@ export class SpotifyService {
     );
   }
 
-  getRandomArtist(): Observable<SpotifyArtist> {
+  getRandomArtist(): Observable<{ artist: SpotifyArtist, album: SpotifyAlbum }> {
     return this.getToken().pipe(
       switchMap(token => this.searchRandomArtistRecursive(token))
     );
   }
 
-  private searchRandomArtistRecursive(token: string): Observable<SpotifyArtist> {
+  private searchRandomArtistRecursive(token: string): Observable<{ artist: SpotifyArtist, album: SpotifyAlbum }> {
     const characters = 'abcdefghijklmnopqrstuvwxyz';
     const randomChar = characters.charAt(Math.floor(Math.random() * characters.length));
     const randomOffset = Math.floor(Math.random() * 1000);
@@ -69,10 +69,19 @@ export class SpotifyService {
         if (response.artists && response.artists.items.length > 0) {
           const artist = response.artists.items[0];
           // Verificar si tiene al menos 3 álbumes
-          return this.http.get<SpotifyAlbumsResponse>(`${this.baseUrl}/artists/${artist.id}/albums?include_groups=album&limit=3`, { headers }).pipe(
+          // Pedimos más de 3 para poder filtrar duplicados si los hubiera
+          return this.http.get<SpotifyAlbumsResponse>(`${this.baseUrl}/artists/${artist.id}/albums?include_groups=album&limit=10`, { headers }).pipe(
             switchMap(albumResponse => {
-              if (albumResponse.items && albumResponse.items.length >= 3) {
-                return of(artist);
+              // Filtrar álbumes duplicados por nombre
+              const uniqueAlbums = albumResponse.items.filter((album, index, self) =>
+                index === self.findIndex((t) => (
+                  t.name === album.name
+                ))
+              );
+
+              if (uniqueAlbums.length >= 3) {
+                const randomAlbum = uniqueAlbums[Math.floor(Math.random() * uniqueAlbums.length)];
+                return of({ artist, album: randomAlbum });
               } else {
                 // Si no tiene suficientes álbumes, buscamos otro
                 return this.searchRandomArtistRecursive(token);

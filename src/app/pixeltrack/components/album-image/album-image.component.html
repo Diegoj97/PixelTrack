@@ -1,5 +1,10 @@
+<div class="genre-display" *ngIf="genre">
+  <span class="genre-label">Género:</span> <span class="genre-value">{{ genre }}</span>
+</div>
+
 <div class="album-container">
-  <div class="placeholder-image">
+  <img *ngIf="imageUrl" [src]="imageUrl" class="album-art blur-effect" alt="Album Art" />
+  <div *ngIf="!imageUrl" class="placeholder-image">
     <span>Album Art</span>
   </div>
 </div>
