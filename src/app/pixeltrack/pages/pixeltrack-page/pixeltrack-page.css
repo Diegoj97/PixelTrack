@@ -7,9 +7,9 @@
 
 .app-container {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto auto;
   height: 100%;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
   background-color: #ffffff;
 }
@@ -36,6 +36,12 @@
   align-items: center;
   flex-grow: 1;
   padding: 10px;
+  padding-top: 120px;
+  padding-bottom: 10px;
+}
+
+app-key-board {
+  margin-bottom: 150px;
 }
 
 .footer {

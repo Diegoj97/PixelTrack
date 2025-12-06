@@ -1,0 +1,14 @@
+<div class="keyboard-container">
+  <div class="keyboard-row" *ngFor="let row of rows">
+    <button *ngFor="let key of row" class="key" [class.special-key]="key.length > 1">
+      <ng-container *ngIf="key === 'BACKSPACE'; else textKey">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+          <path d="M360-200q-19 0-37.5-8.5T292-235l-108-145q-13-16-13-39.5t13-40.5l108-145q14-21 32.5-28t37.5-7h440q33 0 56.5 23.5T880-560v320q0 33-23.5 56.5T800-160H360Zm40-100h380v-320H400L288-440l112 140Zm100-46 94-94 94 94 56-56-94-94 94-94-56-56-94 94-94-94-56 56 94 94-94 94 56 56Z"/>
+        </svg>
+      </ng-container>
+      <ng-template #textKey>
+        {{ key === 'ENTER' ? 'Enter' : key }}
+      </ng-template>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 10px;
+}
+
+.keyboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+}
+
+.key {
+  font-family: inherit;
+  font-weight: bold;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  height: 80px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  background-color: #d3d6da;
+  color: #1a1a1b;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-size: 1.75rem;
+  /* Base width for standard keys */
+  max-width: 75px; 
+}
+
+.key.special-key {
+  flex: 1.5;
+  font-size: 16px;
+  max-width: 100px; /* Slightly wider for special keys */
+}
+
+/* Specific styling to match the image's light blue/gray look */
+.key {
+  background-color: #e2e8f0; /* Light blue-ish gray */
+  color: #0f172a; /* Dark blue-ish text */
+  border-radius: 6px;
+}
+
+.key:active {
+  background-color: #cbd5e1;
+}
+
+/* SVG styling for backspace */
+.key svg {
+  fill: #0f172a;
+  width: 24px;
+  height: 24px;
+}
+
+/* Adjustments for Enter key text */
+.key.special-key {
+  font-size: 14px;
+  text-transform: none; /* "Enter" is mixed case in the image */
+  font-weight: 600;
+}
