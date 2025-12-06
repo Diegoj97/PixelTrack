@@ -15,6 +15,7 @@ export class PixeltrackPage implements OnInit {
 
   currentAlbumImage: string | null = null;
   currentGenre: string | null = null;
+  currentArtistName: string | null = null;
 
   constructor(private spotifyService: SpotifyService) {}
 
@@ -41,6 +42,8 @@ export class PixeltrackPage implements OnInit {
           } else {
             this.currentGenre = 'Género desconocido';
           }
+
+          this.currentArtistName = artist.name;
         } else {
           console.warn('No se encontró ningún artista con los criterios aleatorios.');
         }

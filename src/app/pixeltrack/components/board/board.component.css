@@ -4,27 +4,36 @@
   gap: 5px;
   padding: 10px;
   width: 100%;
-  max-width: 450px;
+  max-width: 100%; /* Permitir que crezca si es necesario */
+  overflow-x: auto; /* Scroll horizontal si es muy largo */
+  justify-content: center;
 }
 
 .grid-row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex; /* Usar flex para adaptarse al contenido */
   gap: 5px;
+  justify-content: center;
 }
 
 .grid-cell {
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  width: 40px; /* Tamaño fijo o min-width */
+  height: 40px;
   border: 2px solid #d3d6da;
   border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2.5rem;
+  font-size: 1.5rem; /* Ajustar tamaño de fuente */
   font-weight: bold;
   text-transform: uppercase;
   user-select: none;
+  flex-shrink: 0; /* No encoger */
+}
+
+.grid-spacer {
+  width: 20px; /* Espacio más pequeño para el separador */
+  height: 40px;
+  flex-shrink: 0;
 }
 
 .grid-cell.filled {
@@ -32,11 +41,14 @@
   animation: pop 0.1s;
 }
 
-@media (max-height: 600px) {
-  :host {
-    gap: 2px;
+@media (max-width: 600px) {
+  .grid-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
   }
-  .grid-row {
-    gap: 2px;
+  .grid-spacer {
+    width: 15px;
+    height: 30px;
   }
 }
