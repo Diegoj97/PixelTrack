@@ -24,7 +24,7 @@
   border: 0;
   padding: 0;
   margin: 0;
-  height: 80px;
+  height: 90px;
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
@@ -35,15 +35,15 @@
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  font-size: 1.75rem;
+  font-size: 2rem;
   /* Base width for standard keys */
-  max-width: 75px; 
+  max-width: 85px; 
 }
 
 .key.special-key {
   flex: 1.5;
-  font-size: 16px;
-  max-width: 100px; /* Slightly wider for special keys */
+  font-size: 18px;
+  max-width: 110px; /* Slightly wider for special keys */
 }
 
 /* Specific styling to match the image's light blue/gray look */
