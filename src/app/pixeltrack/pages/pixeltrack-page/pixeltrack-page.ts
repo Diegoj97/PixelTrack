@@ -89,7 +89,7 @@ export class PixeltrackPage implements OnInit {
           } else if (album.release_date) {
             // Si no hay género, mostrar el año de lanzamiento
             this.currentGenre = album.release_date.split('-')[0];
-            this.currentInfoLabel = 'Año';
+            this.currentInfoLabel = 'Publicación';
           } else {
             this.currentGenre = 'Desconocido';
             this.currentInfoLabel = 'Info';
