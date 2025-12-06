@@ -99,7 +99,7 @@ export class SpotifyService {
                 ))
               );
 
-              if (uniqueAlbums.length >= 3) {
+              if (uniqueAlbums.length >= 1) {
                 const randomAlbum = uniqueAlbums[Math.floor(Math.random() * uniqueAlbums.length)];
                 return of({ artist, album: randomAlbum });
               } else {
