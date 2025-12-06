@@ -45,27 +45,27 @@ export class PixeltrackPage implements OnInit {
     this.currentLang = country.cca2;
     this.currentFlag = country.flags.svg;
     this.showCountryList = false;
+    this.loadRandomArtist(this.currentLang);
   }
 
-  ngOnInit(): void {
-    // Initialize language based on navigator
-    const lang = navigator.language.split('-')[0].toUpperCase();
-    this.currentLang = lang;
-    // We could fetch the flag for the initial language here if needed, 
-    // but for now we'll start with null (showing the SVG icon) or we can try to find it.
+  loadRandomArtist(countryCode?: string): void {
+    console.log('Buscando un artista aleatorio...', countryCode ? `para el mercado: ${countryCode}` : '');
     
-    this.countriesService.getCountries().subscribe({
-      next: (countries) => {
-        console.log('Banderas cargadas:', countries);
-      },
-      error: (err) => {
-        console.error('Error al cargar banderas:', err);
-      }
-    });
+    // Resetear estado del juego
+    this.currentAlbumImage = null;
+    this.currentGenre = null;
+    this.currentArtistName = null;
+    this.keyStatuses = {};
+    this.currentBlur = 15;
+    this.discoveredIndices.clear();
+    if (this.boardComponent) {
+      // Idealmente deberíamos tener un método para resetear el tablero, 
+      // pero por ahora Angular recreará el componente si cambiamos la palabra o forzamos actualización.
+      // Al cambiar currentArtistName a null y luego al nuevo valor, el tablero debería reaccionar si usa ngOnChanges o signals.
+      // Si no, necesitaremos un método reset en BoardComponent.
+    }
 
-    console.log('Buscando un artista aleatorio...');
-    
-    this.spotifyService.getRandomArtist().subscribe({
+    this.spotifyService.getRandomArtist(countryCode).subscribe({
       next: (result) => {
         if (result) {
           const { artist, album } = result;
@@ -95,6 +95,32 @@ export class PixeltrackPage implements OnInit {
       },
       error: (err) => {
         console.error('Error al buscar artista aleatorio:', err);
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    // Initialize language based on navigator
+    const lang = navigator.language.split('-')[0].toUpperCase();
+    this.currentLang = lang;
+    
+    this.countriesService.getCountries().subscribe({
+      next: (countries) => {
+        console.log('Banderas cargadas:', countries);
+        
+        // Buscar si el idioma actual está en la lista de países para poner la bandera
+        const foundCountry = countries.find(c => c.cca2 === this.currentLang);
+        if (foundCountry) {
+          this.currentFlag = foundCountry.flags.svg;
+        }
+
+        // Una vez cargados los países (y la bandera inicial), cargamos el artista
+        this.loadRandomArtist(this.currentLang);
+      },
+      error: (err) => {
+        console.error('Error al cargar banderas:', err);
+        // Si falla la carga de banderas, intentamos cargar el artista de todas formas
+        this.loadRandomArtist(this.currentLang);
       }
     });
   }

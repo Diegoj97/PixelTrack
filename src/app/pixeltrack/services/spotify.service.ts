@@ -43,13 +43,13 @@ export class SpotifyService {
     );
   }
 
-  getRandomArtist(): Observable<{ artist: SpotifyArtist, album: SpotifyAlbum }> {
+  getRandomArtist(countryCode?: string): Observable<{ artist: SpotifyArtist, album: SpotifyAlbum }> {
     return this.getToken().pipe(
-      switchMap(token => this.searchRandomArtistRecursive(token))
+      switchMap(token => this.searchRandomArtistRecursive(token, countryCode))
     );
   }
 
-  private searchRandomArtistRecursive(token: string): Observable<{ artist: SpotifyArtist, album: SpotifyAlbum }> {
+  private searchRandomArtistRecursive(token: string, countryCode?: string): Observable<{ artist: SpotifyArtist, album: SpotifyAlbum }> {
     const characters = 'abcdefghijklmnopqrstuvwxyz';
     const randomChar = characters.charAt(Math.floor(Math.random() * characters.length));
     const randomOffset = Math.floor(Math.random() * 1000);
@@ -58,11 +58,15 @@ export class SpotifyService {
       'Authorization': `Bearer ${token}`
     });
 
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('q', randomChar)
       .set('type', 'artist')
       .set('limit', '1')
       .set('offset', randomOffset.toString());
+
+    if (countryCode) {
+      params = params.set('market', countryCode);
+    }
 
     return this.http.get<SpotifySearchResponse>(`${this.baseUrl}/search`, { headers, params }).pipe(
       switchMap(response => {
@@ -84,13 +88,13 @@ export class SpotifyService {
                 return of({ artist, album: randomAlbum });
               } else {
                 // Si no tiene suficientes álbumes, buscamos otro
-                return this.searchRandomArtistRecursive(token);
+                return this.searchRandomArtistRecursive(token, countryCode);
               }
             })
           );
         }
         // Si no se encontró artista en la búsqueda, intentamos de nuevo
-        return this.searchRandomArtistRecursive(token);
+        return this.searchRandomArtistRecursive(token, countryCode);
       })
     );
   }
