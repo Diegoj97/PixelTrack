@@ -21,6 +21,7 @@ export class PixeltrackPage implements OnInit {
 
   currentAlbumImage: string | null = null;
   currentGenre: string | null = null;
+  currentInfoLabel: string = 'Género';
   currentArtistName: string | null = null;
   currentAlbumName: string | null = null;
   keyStatuses: { [key: string]: string } = {};
@@ -54,10 +55,10 @@ export class PixeltrackPage implements OnInit {
     // Resetear estado del juego
     this.currentAlbumImage = null;
     this.currentGenre = null;
+    this.currentInfoLabel = 'Género';
     this.currentArtistName = null;
     this.currentAlbumName = null;
     this.keyStatuses = {};
-    this.currentBlur = 15;
     this.currentBlur = 15;
     this.discoveredIndices.clear();
     if (this.boardComponent) {
@@ -81,12 +82,17 @@ export class PixeltrackPage implements OnInit {
           if (album.images && album.images.length > 0) {
             this.currentAlbumImage = album.images[0].url;
           }
-
           if (artist.genres && artist.genres.length > 0) {
             // Mostrar solo el primer género
             this.currentGenre = artist.genres[0];
+            this.currentInfoLabel = 'Género';
+          } else if (album.release_date) {
+            // Si no hay género, mostrar el año de lanzamiento
+            this.currentGenre = album.release_date.split('-')[0];
+            this.currentInfoLabel = 'Año';
           } else {
-            this.currentGenre = 'Género desconocido';
+            this.currentGenre = 'Desconocido';
+            this.currentInfoLabel = 'Info';
           }
 
           this.currentArtistName = artist.name;
