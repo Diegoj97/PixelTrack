@@ -2,8 +2,8 @@
   <div class="keyboard-row" *ngFor="let row of rows">
     <button *ngFor="let key of row" class="key" [class.special-key]="key.length > 1">
       <ng-container *ngIf="key === 'BACKSPACE'; else textKey">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-          <path d="M360-200q-19 0-37.5-8.5T292-235l-108-145q-13-16-13-39.5t13-40.5l108-145q14-21 32.5-28t37.5-7h440q33 0 56.5 23.5T880-560v320q0 33-23.5 56.5T800-160H360Zm40-100h380v-320H400L288-440l112 140Zm100-46 94-94 94 94 56-56-94-94 94-94-56-56-94 94-94-94-56 56 94 94-94 94 56 56Z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
         </svg>
       </ng-container>
       <ng-template #textKey>

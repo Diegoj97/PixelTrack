@@ -51,17 +51,31 @@
   background-color: #e2e8f0; /* Light blue-ish gray */
   color: #0f172a; /* Dark blue-ish text */
   border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.key:hover {
+  background-color: #cbd5e1;
+  color: #0f172a;
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .key:active {
-  background-color: #cbd5e1;
+  background-color: #94a3b8;
+  transform: scale(0.95);
 }
 
 /* SVG styling for backspace */
 .key svg {
   fill: #0f172a;
-  width: 24px;
-  height: 24px;
+  transition: fill 0.2s ease;
+  width: 36px;
+  height: 36px;
+}
+
+.key:hover svg {
+  fill: #0f172a;
 }
 
 /* Adjustments for Enter key text */
