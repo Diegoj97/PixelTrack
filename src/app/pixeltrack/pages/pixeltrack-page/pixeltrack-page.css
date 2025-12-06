@@ -11,14 +11,14 @@
   height: 100%;
   max-width: 700px;
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: #121212;
 }
 
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #d3d6da;
+  border-bottom: 1px solid #282828;
   height: 60px;
 }
 
@@ -58,7 +58,7 @@ app-key-board {
 }
 
 .album-name-reveal h3 {
-  color: #333;
+  color: #ffffff;
   font-size: 1.2rem;
   font-weight: bold;
 }
@@ -95,7 +95,7 @@ app-key-board {
 
 .circle-bg {
   fill: none;
-  stroke: #eee;
+  stroke: #333;
   stroke-width: 3.8;
 }
 
@@ -114,7 +114,7 @@ app-key-board {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.2rem;
-  color: #333;
+  color: #ffffff;
   pointer-events: none; /* Let clicks pass through to container */
 }
 
@@ -128,7 +128,7 @@ app-key-board {
   justify-content: center;
   padding: 20px;
   font-size: 0.8rem;
-  color: #888;
+  color: #b3b3b3;
 }
 
 @media (max-height: 600px) {

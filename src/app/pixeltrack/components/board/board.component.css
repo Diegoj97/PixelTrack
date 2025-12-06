@@ -18,7 +18,7 @@
 .grid-cell {
   width: 40px; /* Tamaño fijo o min-width */
   height: 40px;
-  border: 2px solid #d3d6da;
+  border: 2px solid #3a3a3c;
   border-radius: 6px;
   display: flex;
   justify-content: center;
@@ -28,6 +28,7 @@
   text-transform: uppercase;
   user-select: none;
   flex-shrink: 0; /* No encoger */
+  color: #ffffff;
 }
 
 .grid-spacer {
@@ -37,7 +38,7 @@
 }
 
 .grid-cell.filled {
-  border-color: #878a8c;
+  border-color: #565758;
   animation: pop 0.1s;
 }
 

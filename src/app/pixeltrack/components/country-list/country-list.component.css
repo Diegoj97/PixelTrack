@@ -1,7 +1,7 @@
 .country-list-container {
   padding: 20px;
   text-align: center;
-  color: #333;
+  color: #ffffff;
 }
 
 .grid-container {
@@ -12,7 +12,7 @@
 }
 
 .country-card {
-  background-color: #f0f0f0;
+  background-color: #3E3E3E;
   padding: 10px;
   border-radius: 8px;
   display: flex;

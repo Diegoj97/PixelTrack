@@ -1,8 +1,8 @@
 :host {
   display: block;
   width: 100%;
-  border-bottom: 1px solid #d3d6da;
-  background-color: #ffffff;
+  border-bottom: 1px solid #282828;
+  background-color: #121212;
 }
 
 .navbar-container {
@@ -22,7 +22,7 @@
 }
 
 .nav-btn {
-  background-color: #e2e8f0; /* Light blue-ish gray from image */
+  background-color: #282828; /* Dark gray */
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -32,12 +32,12 @@
   padding: 0;
   height: 44px;
   min-width: 44px;
-  color: #0f172a;
+  color: #ffffff;
   transition: background-color 0.2s;
 }
 
 .nav-btn:hover {
-  background-color: #cbd5e1;
+  background-color: #3e3e3e;
 }
 
 .icon-btn svg {

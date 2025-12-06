@@ -10,9 +10,9 @@
 .genre-display {
   margin-bottom: 10px;
   font-size: 1.1rem;
-  color: #333;
+  color: #ffffff;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(40, 40, 40, 0.8);
   padding: 5px 10px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -20,21 +20,21 @@
 
 .genre-label {
   font-weight: bold;
-  color: #555;
+  color: #b3b3b3;
   margin-right: 5px;
 }
 
 .genre-value {
   font-style: italic;
-  color: #000;
+  color: #ffffff;
   text-transform: capitalize;
 }
 
 .album-container {
   width: 320px;
   height: 320px;
-  background-color: #f0f0f0;
-  border: 2px solid #d3d6da;
+  background-color: #282828;
+  border: 2px solid #3a3a3c;
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -45,7 +45,7 @@
 }
 
 .placeholder-image {
-  color: #888;
+  color: #b3b3b3;
   font-weight: bold;
   text-transform: uppercase;
   font-size: 0.8rem;
