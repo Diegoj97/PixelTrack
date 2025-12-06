@@ -12,6 +12,7 @@ export class NavbarComponent implements OnInit {
 
   @Input() currentLang: string = 'ES';
   @Input() currentFlag: string | null = null;
+  @Input() hasAttempted: boolean = false;
   @Output() toggleFlags = new EventEmitter<void>();
 
   ngOnInit(): void {

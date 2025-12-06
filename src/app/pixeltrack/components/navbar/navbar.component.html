@@ -1,6 +1,6 @@
 <div class="navbar-container">
   <div class="left-section">
-    <button class="nav-btn language-btn" (click)="onToggleFlags()">
+    <button class="nav-btn language-btn" (click)="onToggleFlags()" [disabled]="hasAttempted" [class.disabled]="hasAttempted">
       <span class="lang-text">{{ currentLang }}</span>
       
       <img *ngIf="currentFlag" [src]="currentFlag" class="flag-icon-img" alt="Flag">

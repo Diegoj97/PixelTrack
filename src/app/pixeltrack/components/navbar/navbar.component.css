@@ -40,6 +40,12 @@
   background-color: #3e3e3e;
 }
 
+.nav-btn:disabled, .nav-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .icon-btn svg {
   fill: currentColor;
   width: 24px;

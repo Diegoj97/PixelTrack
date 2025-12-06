@@ -41,6 +41,7 @@ export class PixeltrackPage implements OnInit {
 
   currentLang: string = 'ES';
   currentFlag: string | null = null;
+  hasAttempted: boolean = false;
   
   // Conjunto para rastrear índices de letras descubiertas correctamente
   private discoveredIndices: Set<number> = new Set();
@@ -79,6 +80,7 @@ export class PixeltrackPage implements OnInit {
     this.audioProgress = 0;
     this.keyStatuses = {};
     this.currentBlur = 15;
+    this.hasAttempted = false;
     this.discoveredIndices.clear();
     if (this.boardComponent) {
       // Idealmente deberíamos tener un método para resetear el tablero, 
@@ -211,6 +213,7 @@ export class PixeltrackPage implements OnInit {
   }
 
   onGuessChecked(guessStatus: { [key: string]: string }, row?: any[]) {
+    this.hasAttempted = true;
     // Actualizar el estado de las teclas
     // Prioridad: correct > present > absent
     const newStatuses = { ...this.keyStatuses };
