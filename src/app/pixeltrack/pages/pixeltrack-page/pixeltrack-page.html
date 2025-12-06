@@ -17,7 +17,38 @@
       <app-album-image [imageUrl]="currentAlbumImage" [genre]="currentGenre" [label]="currentInfoLabel" [blurAmount]="currentBlur"></app-album-image>
       
       <div *ngIf="currentBlur === 0" class="album-name-reveal">
-        <h3>Album: <span class="album-title">{{ currentAlbumName }}</span></h3>
+        <h3>Album: 
+          <a *ngIf="currentAlbumUrl; else noLink" [href]="currentAlbumUrl" target="_blank" class="album-title-link">{{ currentAlbumName }}</a>
+          <ng-template #noLink><span class="album-title">{{ currentAlbumName }}</span></ng-template>
+        </h3>
+        
+        <div *ngIf="currentPreviewUrl" class="audio-player-container">
+          <div class="circular-player" (click)="toggleAudio(audioPlayer)">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" [attr.stroke-dasharray]="audioProgress + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <div class="controls">
+              <span *ngIf="!isPlaying">▶</span>
+              <span *ngIf="isPlaying">⏸</span>
+            </div>
+          </div>
+          <audio #audioPlayer [src]="currentPreviewUrl" (timeupdate)="updateProgress(audioPlayer)" (ended)="resetPlayer()" hidden></audio>
+        </div>
+
+        <div *ngIf="currentSpotifyEmbedUrl" class="spotify-embed-container">
+           <iframe style="border-radius:12px" [src]="currentSpotifyEmbedUrl" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <div *ngIf="!currentPreviewUrl && !currentSpotifyEmbedUrl" class="audio-player-container" style="flex-direction: column; align-items: center; gap: 5px; opacity: 0.6;">
+           <div class="circular-player" style="cursor: not-allowed;">
+               <svg viewBox="0 0 36 36" class="circular-chart">
+                   <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+               </svg>
+               <div class="controls" style="font-size: 1rem;">✖</div>
+           </div>
+           <span style="font-size: 0.7rem;">Sin audio</span>
+        </div>
       </div>
 
       <app-board [word]="currentArtistName" (guessChecked)="onGuessChecked($event.status, $event.row)"></app-board>

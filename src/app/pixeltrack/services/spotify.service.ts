@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, map, switchMap, catchError, throwError, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { SpotifyArtist, SpotifySearchResponse, SpotifyAlbumsResponse, SpotifyAlbum } from '../interfaces/spotify.interfaces';
+import { SpotifyArtist, SpotifySearchResponse, SpotifyAlbumsResponse, SpotifyAlbum, SpotifyTracksResponse, SpotifyTrack } from '../interfaces/spotify.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,9 @@ export class SpotifyService {
   }
 
   public getToken(): Observable<string> {
+    if (this.accessToken) {
+      return of(this.accessToken);
+    }
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });
@@ -39,6 +42,19 @@ export class SpotifyService {
       catchError(err => {
         console.error('Error al obtener el token:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  getAlbumTracks(albumId: string): Observable<SpotifyTrack[]> {
+    return this.getToken().pipe(
+      switchMap(token => {
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${token}`
+        });
+        return this.http.get<SpotifyTracksResponse>(`${this.baseUrl}/albums/${albumId}/tracks?limit=50`, { headers }).pipe(
+          map(response => response.items)
+        );
       })
     );
   }

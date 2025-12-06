@@ -68,3 +68,30 @@ export interface SpotifySearchResponse {
     total: number;
   };
 }
+
+export interface SpotifyTracksResponse {
+  href: string;
+  items: SpotifyTrack[];
+  limit: number;
+  next: string | null;
+  offset: number;
+  previous: string | null;
+  total: number;
+}
+
+export interface SpotifyTrack {
+  artists: SpotifyArtistSimplified[];
+  available_markets: string[];
+  disc_number: number;
+  duration_ms: number;
+  explicit: boolean;
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
+  is_local: boolean;
+  name: string;
+  preview_url: string | null;
+  track_number: number;
+  type: string;
+  uri: string;
+}

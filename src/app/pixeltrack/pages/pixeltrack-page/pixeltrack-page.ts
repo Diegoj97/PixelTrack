@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BoardComponent } from '../../components/board/board.component';
 import { KeyBoardComponent } from '../../components/key-board/key-board.component';
 import { AlbumImageComponent } from '../../components/album-image/album-image.component';
@@ -24,6 +25,14 @@ export class PixeltrackPage implements OnInit {
   currentInfoLabel: string = 'Género';
   currentArtistName: string | null = null;
   currentAlbumName: string | null = null;
+  currentAlbumUrl: string | null = null;
+  currentPreviewUrl: string | null = null;
+  currentSpotifyEmbedUrl: SafeResourceUrl | null = null;
+  
+  // Audio Player State
+  isPlaying: boolean = false;
+  audioProgress: number = 0;
+  
   keyStatuses: { [key: string]: string } = {};
   currentBlur: number = 15;
   showCountryList: boolean = false;
@@ -36,7 +45,8 @@ export class PixeltrackPage implements OnInit {
 
   constructor(
     private spotifyService: SpotifyService,
-    private countriesService: CountriesService
+    private countriesService: CountriesService,
+    private sanitizer: DomSanitizer
   ) {}
 
   toggleCountryList(): void {
@@ -58,6 +68,11 @@ export class PixeltrackPage implements OnInit {
     this.currentInfoLabel = 'Género';
     this.currentArtistName = null;
     this.currentAlbumName = null;
+    this.currentAlbumUrl = null;
+    this.currentPreviewUrl = null;
+    this.currentSpotifyEmbedUrl = null;
+    this.isPlaying = false;
+    this.audioProgress = 0;
     this.keyStatuses = {};
     this.currentBlur = 15;
     this.discoveredIndices.clear();
@@ -76,8 +91,34 @@ export class PixeltrackPage implements OnInit {
           console.log('Nombre:', artist.name);
           console.log('Imagen:', artist.images[0]?.url);
           console.log('Album seleccionado:', album.name);
-
           this.currentAlbumName = album.name;
+          this.currentAlbumUrl = album.external_urls.spotify;
+
+          // Buscar tracks del álbum para obtener preview
+          this.spotifyService.getAlbumTracks(album.id).subscribe({
+            next: (tracks) => {
+              console.log(`Tracks totales del álbum: ${tracks.length}`);
+
+              if (tracks.length > 0) {
+                // Siempre generar el Embed como opción
+                const randomTrackForEmbed = tracks[Math.floor(Math.random() * tracks.length)];
+                const embedUrl = `https://open.spotify.com/embed/track/${randomTrackForEmbed.id}?utm_source=generator&theme=0`;
+                this.currentSpotifyEmbedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+              }
+
+              // Filtrar tracks que tengan preview_url
+              const tracksWithPreview = tracks.filter(t => t.preview_url);
+              if (tracksWithPreview.length > 0) {
+                // Seleccionar uno aleatorio
+                const randomTrack = tracksWithPreview[Math.floor(Math.random() * tracksWithPreview.length)];
+                this.currentPreviewUrl = randomTrack.preview_url;
+                console.log('Preview URL encontrada:', this.currentPreviewUrl);
+              } else {
+                console.warn('No se encontraron tracks con preview para este álbum.');
+              }
+            },
+            error: (err) => console.error('Error al obtener tracks:', err)
+          });
 
           if (album.images && album.images.length > 0) {
             this.currentAlbumImage = album.images[0].url;
@@ -187,6 +228,26 @@ export class PixeltrackPage implements OnInit {
       // Blur inicial: 15, Blur final: 0
       this.currentBlur = Math.max(0, 15 * (1 - percentageDiscovered));
     }
+  }
+
+  toggleAudio(audioElement: HTMLAudioElement): void {
+    if (this.isPlaying) {
+      audioElement.pause();
+    } else {
+      audioElement.play();
+    }
+    this.isPlaying = !this.isPlaying;
+  }
+
+  updateProgress(audioElement: HTMLAudioElement): void {
+    if (audioElement.duration) {
+      this.audioProgress = (audioElement.currentTime / audioElement.duration) * 100;
+    }
+  }
+
+  resetPlayer(): void {
+    this.isPlaying = false;
+    this.audioProgress = 0;
   }
 
 }
