@@ -16,13 +16,21 @@ export class PixeltrackPage implements OnInit {
   constructor(private spotifyService: SpotifyService) {}
 
   ngOnInit(): void {
-    console.log('Intentando obtener token...');
-    this.spotifyService.getToken().subscribe({
-      next: (token) => {
-        console.log('¡ÉXITO! Token obtenido:', token);
+    console.log('Buscando un artista aleatorio...');
+    
+    this.spotifyService.getRandomArtist().subscribe({
+      next: (artist) => {
+        if (artist) {
+          console.log('¡ÉXITO! Artista aleatorio encontrado:', artist);
+          console.log('Nombre:', artist.name);
+          console.log('Popularidad:', artist.popularity);
+          console.log('Imagen:', artist.images[0]?.url);
+        } else {
+          console.warn('No se encontró ningún artista con los criterios aleatorios.');
+        }
       },
       error: (err) => {
-        console.error('FALLO al obtener token:', err);
+        console.error('Error al buscar artista aleatorio:', err);
       }
     });
   }

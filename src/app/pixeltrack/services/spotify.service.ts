@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, map, switchMap, catchError, throwError } from 'rxjs';
+import { Observable, map, switchMap, catchError, throwError, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { SpotifyArtist, SpotifySearchResponse, SpotifyAlbumsResponse } from '../interfaces/spotify.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,49 @@ export class SpotifyService {
       catchError(err => {
         console.error('Error al obtener el token:', err);
         return throwError(() => err);
+      })
+    );
+  }
+
+  getRandomArtist(): Observable<SpotifyArtist> {
+    return this.getToken().pipe(
+      switchMap(token => this.searchRandomArtistRecursive(token))
+    );
+  }
+
+  private searchRandomArtistRecursive(token: string): Observable<SpotifyArtist> {
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
+    const randomChar = characters.charAt(Math.floor(Math.random() * characters.length));
+    const randomOffset = Math.floor(Math.random() * 1000);
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    const params = new HttpParams()
+      .set('q', randomChar)
+      .set('type', 'artist')
+      .set('limit', '1')
+      .set('offset', randomOffset.toString());
+
+    return this.http.get<SpotifySearchResponse>(`${this.baseUrl}/search`, { headers, params }).pipe(
+      switchMap(response => {
+        if (response.artists && response.artists.items.length > 0) {
+          const artist = response.artists.items[0];
+          // Verificar si tiene al menos 3 álbumes
+          return this.http.get<SpotifyAlbumsResponse>(`${this.baseUrl}/artists/${artist.id}/albums?include_groups=album&limit=3`, { headers }).pipe(
+            switchMap(albumResponse => {
+              if (albumResponse.items && albumResponse.items.length >= 3) {
+                return of(artist);
+              } else {
+                // Si no tiene suficientes álbumes, buscamos otro
+                return this.searchRandomArtistRecursive(token);
+              }
+            })
+          );
+        }
+        // Si no se encontró artista en la búsqueda, intentamos de nuevo
+        return this.searchRandomArtistRecursive(token);
       })
     );
   }
