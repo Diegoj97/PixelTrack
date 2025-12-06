@@ -9,7 +9,7 @@
     <app-board [word]="currentArtistName"></app-board>
   </main>
 
-  <app-key-board></app-key-board>
+  <app-key-board (keyPress)="onKeyPress($event)"></app-key-board>
 
   <footer class="footer">
     <p>Simple. Grid. PixelTrack.</p>

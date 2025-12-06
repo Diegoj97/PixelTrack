@@ -1,6 +1,8 @@
 <div class="grid-row" *ngFor="let row of rows">
   <ng-container *ngFor="let cell of row">
-    <div class="grid-cell" *ngIf="!cell.isSpace"></div>
+    <div class="grid-cell" *ngIf="!cell.isSpace" [class.filled]="cell.value !== ''">
+      {{ cell.value }}
+    </div>
     <div class="grid-spacer" *ngIf="cell.isSpace"></div>
   </ng-container>
 </div>

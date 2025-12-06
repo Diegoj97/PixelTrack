@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BoardComponent } from '../../components/board/board.component';
 import { KeyBoardComponent } from '../../components/key-board/key-board.component';
 import { AlbumImageComponent } from '../../components/album-image/album-image.component';
@@ -12,6 +12,8 @@ import { SpotifyService } from '../../services/spotify.service';
   styleUrl: './pixeltrack-page.css',
 })
 export class PixeltrackPage implements OnInit {
+
+  @ViewChild(BoardComponent) boardComponent!: BoardComponent;
 
   currentAlbumImage: string | null = null;
   currentGenre: string | null = null;
@@ -52,6 +54,12 @@ export class PixeltrackPage implements OnInit {
         console.error('Error al buscar artista aleatorio:', err);
       }
     });
+  }
+
+  onKeyPress(key: string) {
+    if (this.boardComponent) {
+      this.boardComponent.handleKeyPress(key);
+    }
   }
 
 }
