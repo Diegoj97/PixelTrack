@@ -16,7 +16,6 @@
     <div *ngIf="isLoading; else gameContent">
       <app-loader></app-loader>
     </div>
-    <app-key-board (keyPress)="onKeyPress($event)" [keyStatuses]="keyStatuses"></app-key-board>
   </ng-template>
 
   <ng-template #gameContent>
@@ -60,6 +59,7 @@
 
       <app-board [word]="currentArtistName" (guessChecked)="onGuessChecked($event.status, $event.row)"></app-board>
     </main>
+    <app-key-board (keyPress)="onKeyPress($event)" [keyStatuses]="keyStatuses" [targetWord]="currentArtistName"></app-key-board>
   </ng-template>
 
   <footer class="footer">
