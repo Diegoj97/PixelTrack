@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  height: 100vh;
+  width: 100%;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.app-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #d3d6da;
+  height: 50px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+.game-board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+@media (max-height: 600px) {
+  .header {
+    height: 40px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+}
