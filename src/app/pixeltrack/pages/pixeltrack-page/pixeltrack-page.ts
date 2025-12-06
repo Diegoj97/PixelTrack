@@ -4,6 +4,7 @@ import { KeyBoardComponent } from '../../components/key-board/key-board.componen
 import { AlbumImageComponent } from '../../components/album-image/album-image.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { SpotifyService } from '../../services/spotify.service';
+import { CountriesService } from '../../services/countries.service';
 
 @Component({
   selector: 'app-pixeltrack-page',
@@ -24,9 +25,21 @@ export class PixeltrackPage implements OnInit {
   // Conjunto para rastrear índices de letras descubiertas correctamente
   private discoveredIndices: Set<number> = new Set();
 
-  constructor(private spotifyService: SpotifyService) {}
+  constructor(
+    private spotifyService: SpotifyService,
+    private countriesService: CountriesService
+  ) {}
 
   ngOnInit(): void {
+    this.countriesService.getCountries().subscribe({
+      next: (countries) => {
+        console.log('Banderas cargadas:', countries);
+      },
+      error: (err) => {
+        console.error('Error al cargar banderas:', err);
+      }
+    });
+
     console.log('Buscando un artista aleatorio...');
     
     this.spotifyService.getRandomArtist().subscribe({
