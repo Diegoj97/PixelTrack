@@ -22,6 +22,7 @@ export class PixeltrackPage implements OnInit {
   currentAlbumImage: string | null = null;
   currentGenre: string | null = null;
   currentArtistName: string | null = null;
+  currentAlbumName: string | null = null;
   keyStatuses: { [key: string]: string } = {};
   currentBlur: number = 15;
   showCountryList: boolean = false;
@@ -50,12 +51,13 @@ export class PixeltrackPage implements OnInit {
 
   loadRandomArtist(countryCode?: string): void {
     console.log('Buscando un artista aleatorio...', countryCode ? `para el mercado: ${countryCode}` : '');
-    
     // Resetear estado del juego
     this.currentAlbumImage = null;
     this.currentGenre = null;
     this.currentArtistName = null;
+    this.currentAlbumName = null;
     this.keyStatuses = {};
+    this.currentBlur = 15;
     this.currentBlur = 15;
     this.discoveredIndices.clear();
     if (this.boardComponent) {
@@ -71,9 +73,10 @@ export class PixeltrackPage implements OnInit {
           const { artist, album } = result;
           console.log('¡ÉXITO! Artista aleatorio encontrado:', artist);
           console.log('Nombre:', artist.name);
-          console.log('Popularidad:', artist.popularity);
           console.log('Imagen:', artist.images[0]?.url);
           console.log('Album seleccionado:', album.name);
+
+          this.currentAlbumName = album.name;
 
           if (album.images && album.images.length > 0) {
             this.currentAlbumImage = album.images[0].url;

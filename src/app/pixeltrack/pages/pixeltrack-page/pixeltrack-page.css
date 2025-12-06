@@ -50,6 +50,28 @@ app-key-board {
   margin-bottom: 200px;
 }
 
+.album-name-reveal {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  animation: fadeIn 1s ease-in;
+}
+
+.album-name-reveal h3 {
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.album-title {
+  color: #1db954;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .footer {
   display: flex;
   justify-content: center;

@@ -15,6 +15,11 @@
   <ng-template #gameContent>
     <main class="game-board">
       <app-album-image [imageUrl]="currentAlbumImage" [genre]="currentGenre" [blurAmount]="currentBlur"></app-album-image>
+      
+      <div *ngIf="currentBlur === 0" class="album-name-reveal">
+        <h3>Album: <span class="album-title">{{ currentAlbumName }}</span></h3>
+      </div>
+
       <app-board [word]="currentArtistName" (guessChecked)="onGuessChecked($event.status, $event.row)"></app-board>
     </main>
 
