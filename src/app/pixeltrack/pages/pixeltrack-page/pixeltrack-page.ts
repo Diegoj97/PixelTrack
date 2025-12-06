@@ -5,6 +5,7 @@ import { KeyBoardComponent } from '../../components/key-board/key-board.componen
 import { AlbumImageComponent } from '../../components/album-image/album-image.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { CountryListComponent } from '../../components/country-list/country-list.component';
+import { LoaderComponent } from '../../components/loader/loader.component';
 import { SpotifyService } from '../../services/spotify.service';
 import { CountriesService } from '../../services/countries.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +13,7 @@ import { Country } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'app-pixeltrack-page',
-  imports: [BoardComponent, KeyBoardComponent, AlbumImageComponent, NavbarComponent, CountryListComponent, CommonModule],
+  imports: [BoardComponent, KeyBoardComponent, AlbumImageComponent, NavbarComponent, CountryListComponent, LoaderComponent, CommonModule],
   templateUrl: './pixeltrack-page.html',
   styleUrl: './pixeltrack-page.css',
 })
@@ -28,6 +29,7 @@ export class PixeltrackPage implements OnInit {
   currentAlbumUrl: string | null = null;
   currentPreviewUrl: string | null = null;
   currentSpotifyEmbedUrl: SafeResourceUrl | null = null;
+  isLoading: boolean = false;
   
   // Audio Player State
   isPlaying: boolean = false;
@@ -62,6 +64,8 @@ export class PixeltrackPage implements OnInit {
 
   loadRandomArtist(countryCode?: string): void {
     console.log('Buscando un artista aleatorio...', countryCode ? `para el mercado: ${countryCode}` : '');
+    this.isLoading = true;
+    
     // Resetear estado del juego
     this.currentAlbumImage = null;
     this.currentGenre = null;
@@ -139,12 +143,15 @@ export class PixeltrackPage implements OnInit {
           this.currentArtistName = artist.name;
           this.currentBlur = 15; // Resetear blur
           this.discoveredIndices.clear(); // Resetear índices descubiertos
+          this.isLoading = false;
         } else {
           console.warn('No se encontró ningún artista con los criterios aleatorios.');
+          this.isLoading = false;
         }
       },
       error: (err) => {
         console.error('Error al buscar artista aleatorio:', err);
+        this.isLoading = false;
       }
     });
   }

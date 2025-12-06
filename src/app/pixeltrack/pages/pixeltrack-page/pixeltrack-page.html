@@ -8,9 +8,16 @@
     (toggleFlags)="toggleCountryList()">
   </app-navbar>
 
-  <div *ngIf="showCountryList; else gameContent">
+  <div *ngIf="showCountryList; else contentWrapper">
     <app-country-list (countrySelected)="onCountrySelected($event)"></app-country-list>
   </div>
+
+  <ng-template #contentWrapper>
+    <div *ngIf="isLoading; else gameContent">
+      <app-loader></app-loader>
+    </div>
+    <app-key-board (keyPress)="onKeyPress($event)" [keyStatuses]="keyStatuses"></app-key-board>
+  </ng-template>
 
   <ng-template #gameContent>
     <main class="game-board">
@@ -53,8 +60,6 @@
 
       <app-board [word]="currentArtistName" (guessChecked)="onGuessChecked($event.status, $event.row)"></app-board>
     </main>
-
-    <app-key-board (keyPress)="onKeyPress($event)" [keyStatuses]="keyStatuses"></app-key-board>
   </ng-template>
 
   <footer class="footer">
