@@ -3,7 +3,7 @@
 </div>
 
 <div class="album-container">
-  <img *ngIf="imageUrl" [src]="imageUrl" class="album-art blur-effect" alt="Album Art" />
+  <img *ngIf="imageUrl" [src]="imageUrl" class="album-art" [style.filter]="'blur(' + blurAmount + 'px)'" alt="Album Art" />
   <div *ngIf="!imageUrl" class="placeholder-image">
     <span>Album Art</span>
   </div>

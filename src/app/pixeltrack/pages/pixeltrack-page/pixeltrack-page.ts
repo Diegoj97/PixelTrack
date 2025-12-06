@@ -18,6 +18,11 @@ export class PixeltrackPage implements OnInit {
   currentAlbumImage: string | null = null;
   currentGenre: string | null = null;
   currentArtistName: string | null = null;
+  keyStatuses: { [key: string]: string } = {};
+  currentBlur: number = 15;
+  
+  // Conjunto para rastrear índices de letras descubiertas correctamente
+  private discoveredIndices: Set<number> = new Set();
 
   constructor(private spotifyService: SpotifyService) {}
 
@@ -46,6 +51,8 @@ export class PixeltrackPage implements OnInit {
           }
 
           this.currentArtistName = artist.name;
+          this.currentBlur = 15; // Resetear blur
+          this.discoveredIndices.clear(); // Resetear índices descubiertos
         } else {
           console.warn('No se encontró ningún artista con los criterios aleatorios.');
         }
@@ -59,6 +66,55 @@ export class PixeltrackPage implements OnInit {
   onKeyPress(key: string) {
     if (this.boardComponent) {
       this.boardComponent.handleKeyPress(key);
+    }
+  }
+
+  onGuessChecked(guessStatus: { [key: string]: string }, row?: any[]) {
+    // Actualizar el estado de las teclas
+    // Prioridad: correct > present > absent
+    const newStatuses = { ...this.keyStatuses };
+
+    for (const [key, status] of Object.entries(guessStatus)) {
+      const currentStatus = newStatuses[key];
+
+      if (status === 'correct') {
+        newStatuses[key] = 'correct';
+      } else if (status === 'present' && currentStatus !== 'correct') {
+        newStatuses[key] = 'present';
+      } else if (status === 'absent' && currentStatus !== 'correct' && currentStatus !== 'present') {
+        newStatuses[key] = 'absent';
+      }
+    }
+
+    this.keyStatuses = newStatuses;
+
+    // Calcular reducción de blur si tenemos la fila
+    if (row && this.currentArtistName) {
+      this.updateBlur(row);
+    }
+  }
+
+  updateBlur(row: any[]) {
+    if (!this.currentArtistName) return;
+
+    // Identificar nuevas letras correctas en su posición
+    row.forEach((cell, index) => {
+      if (!cell.isSpace && cell.status === 'correct') {
+        this.discoveredIndices.add(index);
+      }
+    });
+
+    // Calcular el porcentaje de letras descubiertas
+    // Contamos solo caracteres que no son espacios
+    const totalChars = this.currentArtistName.replace(/ /g, '').length;
+    const discoveredCount = this.discoveredIndices.size;
+
+    if (totalChars > 0) {
+      const percentageDiscovered = discoveredCount / totalChars;
+      
+      // Reducir el blur proporcionalmente
+      // Blur inicial: 15, Blur final: 0
+      this.currentBlur = Math.max(0, 15 * (1 - percentageDiscovered));
     }
   }
 

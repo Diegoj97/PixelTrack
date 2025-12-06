@@ -1,6 +1,10 @@
 <div class="grid-row" *ngFor="let row of rows">
   <ng-container *ngFor="let cell of row">
-    <div class="grid-cell" *ngIf="!cell.isSpace" [class.filled]="cell.value !== ''">
+    <div class="grid-cell" *ngIf="!cell.isSpace" 
+         [class.filled]="cell.value !== ''"
+         [class.correct]="cell.status === 'correct'"
+         [class.present]="cell.status === 'present'"
+         [class.absent]="cell.status === 'absent'">
       {{ cell.value }}
     </div>
     <div class="grid-spacer" *ngIf="cell.isSpace"></div>

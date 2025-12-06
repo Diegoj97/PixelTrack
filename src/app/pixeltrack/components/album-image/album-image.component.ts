@@ -11,4 +11,5 @@ import { CommonModule } from '@angular/common';
 export class AlbumImageComponent {
   @Input() imageUrl: string | null = null;
   @Input() genre: string | null = null;
+  @Input() blurAmount: number = 15; // Valor inicial de blur
 }

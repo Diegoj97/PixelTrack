@@ -41,6 +41,24 @@
   animation: pop 0.1s;
 }
 
+.grid-cell.correct {
+  background-color: #1DB954; /* Spotify Green */
+  color: white;
+  border-color: #1DB954;
+}
+
+.grid-cell.present {
+  background-color: #e5e500; /* Yellow */
+  color: white;
+  border-color: #e5e500;
+}
+
+.grid-cell.absent {
+  background-color: #787c7e; /* Gray */
+  color: white;
+  border-color: #787c7e;
+}
+
 @media (max-width: 600px) {
   .grid-cell {
     width: 30px;

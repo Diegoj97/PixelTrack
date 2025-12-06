@@ -5,11 +5,11 @@
   <app-navbar></app-navbar>
 
   <main class="game-board">
-    <app-album-image [imageUrl]="currentAlbumImage" [genre]="currentGenre"></app-album-image>
-    <app-board [word]="currentArtistName"></app-board>
+    <app-album-image [imageUrl]="currentAlbumImage" [genre]="currentGenre" [blurAmount]="currentBlur"></app-album-image>
+    <app-board [word]="currentArtistName" (guessChecked)="onGuessChecked($event.status, $event.row)"></app-board>
   </main>
 
-  <app-key-board (keyPress)="onKeyPress($event)"></app-key-board>
+  <app-key-board (keyPress)="onKeyPress($event)" [keyStatuses]="keyStatuses"></app-key-board>
 
   <footer class="footer">
     <p>Simple. Grid. PixelTrack.</p>

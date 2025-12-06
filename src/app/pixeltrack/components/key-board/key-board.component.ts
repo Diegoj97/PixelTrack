@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './key-board.component.css'
 })
 export class KeyBoardComponent {
+  @Input() keyStatuses: { [key: string]: string } = {};
   @Output() keyPress = new EventEmitter<string>();
 
   rows = [

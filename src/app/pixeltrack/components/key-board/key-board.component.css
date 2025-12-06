@@ -46,6 +46,21 @@
   max-width: 110px; /* Slightly wider for special keys */
 }
 
+.key.correct {
+  background-color: #1DB954;
+  color: white;
+}
+
+.key.present {
+  background-color: #e5e500;
+  color: white;
+}
+
+.key.absent {
+  background-color: #787c7e;
+  color: white;
+}
+
 /* Specific styling to match the image's light blue/gray look */
 .key {
   background-color: #e2e8f0; /* Light blue-ish gray */

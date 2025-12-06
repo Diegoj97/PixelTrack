@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class BoardComponent implements OnChanges {
   @Input() word: string | null = null;
+  @Output() guessChecked = new EventEmitter<{ status: { [key: string]: string }, row: any[] }>();
 
   rows: any[][] = [];
   attempts: number = 5;
@@ -97,11 +98,62 @@ export class BoardComponent implements OnChanges {
     const isComplete = currentRow.every((cell: any) => cell.isSpace || cell.value !== '');
     
     if (isComplete) {
-      // Aquí iría la lógica de validación (colores)
-      console.log('Intento enviado:', currentRow.map((c: any) => c.value).join(''));
+      this.checkRow(currentRow);
       this.currentRowIndex++;
     } else {
       console.log('Fila incompleta');
     }
+  }
+
+  checkRow(row: any[]) {
+    if (!this.word) return;
+
+    const targetWord = this.word.toUpperCase();
+    const targetChars = targetWord.split('');
+    const guessStatus: { [key: string]: string } = {};
+
+    // Contadores para manejar letras repetidas
+    const targetLetterCounts: { [key: string]: number } = {};
+    targetChars.forEach(char => {
+      if (char !== ' ') {
+        targetLetterCounts[char] = (targetLetterCounts[char] || 0) + 1;
+      }
+    });
+
+    // Primera pasada: Identificar aciertos (Verdes)
+    row.forEach((cell, index) => {
+      if (cell.isSpace) return;
+
+      const letter = cell.value.toUpperCase();
+      const targetChar = targetChars[index];
+
+      if (letter === targetChar) {
+        cell.status = 'correct';
+        targetLetterCounts[letter]--;
+        guessStatus[letter] = 'correct';
+      }
+    });
+
+    // Segunda pasada: Identificar letras presentes pero mal ubicadas (Amarillas) y ausentes (Grises)
+    row.forEach((cell, index) => {
+      if (cell.isSpace || cell.status === 'correct') return;
+
+      const letter = cell.value.toUpperCase();
+
+      if (targetLetterCounts[letter] > 0) {
+        cell.status = 'present';
+        targetLetterCounts[letter]--;
+        if (guessStatus[letter] !== 'correct') {
+          guessStatus[letter] = 'present';
+        }
+      } else {
+        cell.status = 'absent';
+        if (!guessStatus[letter]) {
+          guessStatus[letter] = 'absent';
+        }
+      }
+    });
+
+    this.guessChecked.emit({ status: guessStatus, row: row });
   }
 }
