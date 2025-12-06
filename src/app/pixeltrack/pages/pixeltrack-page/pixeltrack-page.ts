@@ -3,12 +3,14 @@ import { BoardComponent } from '../../components/board/board.component';
 import { KeyBoardComponent } from '../../components/key-board/key-board.component';
 import { AlbumImageComponent } from '../../components/album-image/album-image.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { CountryListComponent } from '../../components/country-list/country-list.component';
 import { SpotifyService } from '../../services/spotify.service';
 import { CountriesService } from '../../services/countries.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-pixeltrack-page',
-  imports: [BoardComponent, KeyBoardComponent, AlbumImageComponent, NavbarComponent],
+  imports: [BoardComponent, KeyBoardComponent, AlbumImageComponent, NavbarComponent, CountryListComponent, CommonModule],
   templateUrl: './pixeltrack-page.html',
   styleUrl: './pixeltrack-page.css',
 })
@@ -21,6 +23,7 @@ export class PixeltrackPage implements OnInit {
   currentArtistName: string | null = null;
   keyStatuses: { [key: string]: string } = {};
   currentBlur: number = 15;
+  showCountryList: boolean = false;
   
   // Conjunto para rastrear índices de letras descubiertas correctamente
   private discoveredIndices: Set<number> = new Set();
@@ -29,6 +32,10 @@ export class PixeltrackPage implements OnInit {
     private spotifyService: SpotifyService,
     private countriesService: CountriesService
   ) {}
+
+  toggleCountryList(): void {
+    this.showCountryList = !this.showCountryList;
+  }
 
   ngOnInit(): void {
     this.countriesService.getCountries().subscribe({

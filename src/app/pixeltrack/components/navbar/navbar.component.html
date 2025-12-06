@@ -1,12 +1,17 @@
 <div class="navbar-container">
   <div class="left-section">
     <button class="nav-btn language-btn">
-      <span class="flag-icon">🇪🇸</span>
-      <span class="lang-text">ES</span>
+      <span class="flag-icon">{{ currentFlag }}</span>
+      <span class="lang-text">{{ currentLang }}</span>
     </button>
     <button class="nav-btn icon-btn" aria-label="Multiplayer">
       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
         <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
+      </svg>
+    </button>
+    <button class="nav-btn icon-btn" aria-label="Flags" (click)="onToggleFlags()">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+        <path d="M200-120v-680h360l16 80h224v400H520l-16-80H280v280h-80Zm300-440Zm86 160h134v-240H510l-16-80H280v240h290l16 80Z"/>
       </svg>
     </button>
   </div>
