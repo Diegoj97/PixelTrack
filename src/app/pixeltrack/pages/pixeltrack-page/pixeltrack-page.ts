@@ -158,8 +158,30 @@ export class PixeltrackPage implements OnInit {
 
   ngOnInit(): void {
     // Initialize language based on navigator
-    const lang = navigator.language.split('-')[0].toUpperCase();
-    this.currentLang = lang;
+    const browserLang = navigator.language; // e.g., "en-US", "es-ES", "en"
+    let targetCountry = 'US'; // Default fallback
+
+    if (browserLang.includes('-')) {
+      // If we have "en-US", take "US"
+      targetCountry = browserLang.split('-')[1].toUpperCase();
+    } else {
+      // If we only have "en", "es", map common ones or use as is (assuming it matches a country code like ES, FR, IT)
+      const langCode = browserLang.toUpperCase();
+      if (langCode === 'EN') {
+        targetCountry = 'US';
+      } else if (langCode === 'JA') {
+        targetCountry = 'JP'; // Japan
+      } else if (langCode === 'KO') {
+        targetCountry = 'KR'; // South Korea
+      } else if (langCode === 'ZH') {
+        targetCountry = 'CN'; // China
+      } else {
+        // For many European languages, the language code matches the country code (ES, FR, IT, DE, PT...)
+        targetCountry = langCode;
+      }
+    }
+
+    this.currentLang = targetCountry;
     
     this.countriesService.getCountries().subscribe({
       next: (countries) => {
